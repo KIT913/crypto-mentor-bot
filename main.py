@@ -22,7 +22,7 @@ def send_welcome(message):
         "We are the «[CRYPTO MENTOR | KIT grp](https://t.me/+V8FKWfygiRY4Nzcx)» community💎\n\n"
         "📊 Our team is based on Futures market analysis.\n"
         "The winning percentage of our Signals is now 97% ✅\n\n"
-        "📲 [Join now](https://t.me/+V8FKWfygiRY4Nzcx)"
+        "📲 [Join now](https://t.me/Kit_futures?text=I%20WANT%20SIGNA)"
     )
 
     # Отправка сообщения клиенту
