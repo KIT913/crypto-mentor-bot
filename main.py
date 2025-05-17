@@ -1,23 +1,14 @@
 import telebot
+from flask import Flask, request
+import os
 
-bot = telebot.TeleBot("7831525545:AAE2ndGlPoZ1vQWHmPW24aKDwCoWrhguP-g")
-admin_id = 7928644968
+API_TOKEN = 'ТВОЙ_ТОКЕН_БОТА'
+bot = telebot.TeleBot(API_TOKEN)
+server = Flask(__name__)
 
-@bot.message_handler(commands=["start"])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
     chat_id = message.chat.id
-    user = message.from_user
-
-    # Уведомление админу
-    notify = (
-        f"👤 New user launched the bot!\n"
-        f"First name: {user.first_name} {user.last_name or ''}\n"
-        f"Username: @{user.username}\n"
-        f"ID: {user.id}"
-    )
-    bot.send_message(admin_id, notify)
-
-    # Сообщение пользователю
     text = (
         "🖐 Glad to see you on our👉🏻 *CHANNEL* 👈🏻\n\n"
         "We are the «*CRYPTO MENTOR | KIT grp*» community💎\n\n"
@@ -34,4 +25,17 @@ def send_welcome(message):
 
     bot.send_message(chat_id, text, parse_mode="Markdown", reply_markup=markup)
 
-bot.polling(none_stop=True)
+@server.route(f"/{API_TOKEN}", methods=["POST"])
+def webhook():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return {"ok": True}
+
+@server.route("/")
+def index():
+    return "Bot is live!"
+
+bot.remove_webhook()
+bot.set_webhook(url=f"https://crypto-mentor-bot.onrender.com/{API_TOKEN}")
+
+if name == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
